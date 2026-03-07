@@ -16,6 +16,9 @@ export default {
       "Administra tus suscripciones de repositorios de GitHub y rastrea commits",
     searchPlaceholder:
       "Buscar repositorios... (intenta: is:subscribed, is:private, is:public)",
+    manageAccess: "Administrar acceso a GitHub",
+    manageAccessTooltip:
+      "Re-autorizar para dar acceso a organizaciones adicionales de GitHub",
     tabs: {
       available: "Disponibles",
       subscribed: "Suscritos",

@@ -15,6 +15,9 @@ export default {
     subtitle: "Manage your GitHub repository subscriptions and track commits",
     searchPlaceholder:
       "Search repositories... Try: is:subscribed, org:owner, user:username (⌘K for quick nav)",
+    manageAccess: "Manage GitHub Access",
+    manageAccessTooltip:
+      "Re-authorize to grant access to additional GitHub organizations",
     tabs: {
       available: "Available",
       subscribed: "Subscribed",

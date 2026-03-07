@@ -115,3 +115,5 @@ export const api = {
 };
 
 export const getAuthUrl = () => `${BASE_URL}/github/redirect`;
+
+export const getReauthorizeUrl = () => `${BASE_URL}/github/reauthorize`;

@@ -29,6 +29,16 @@
             flat
             dense
             round
+            icon="vpn_key"
+            size="sm"
+            @click="handleReauthorize"
+          >
+            <q-tooltip>{{ $t("dashboard.manageAccessTooltip") }}</q-tooltip>
+          </q-btn>
+          <q-btn
+            flat
+            dense
+            round
             icon="logout"
             size="sm"
             :loading="logoutMutation.isPending.value"
@@ -141,6 +151,7 @@ import { useSubscribe, useUnsubscribe } from "@/hooks/useSubscriptions";
 import { useLogout } from "@/hooks/useAuth";
 import { useAuthStore } from "@/stores/auth";
 import { parseSearchQuery } from "@/utils/searchFilters";
+import { getReauthorizeUrl } from "@/utils/api";
 import type { GitHubRepo, SubscribedRepo } from "@/types";
 
 const { t } = useI18n();
@@ -297,6 +308,10 @@ const handleUnsubscribe = (repoId: number) => {
 
 const handleLogout = () => {
   logoutMutation.mutate();
+};
+
+const handleReauthorize = () => {
+  window.location.href = getReauthorizeUrl();
 };
 </script>
 
