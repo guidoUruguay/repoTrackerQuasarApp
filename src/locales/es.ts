@@ -1,0 +1,66 @@
+export default {
+  common: {
+    appName: "Rastreador de Repositorios",
+    logout: "Cerrar sesión",
+    loading: "Cargando...",
+    error: "Error",
+  },
+  login: {
+    title: "Rastreador de Repositorios",
+    subtitle: "Rastrea tus repositorios de GitHub",
+    loginButton: "Iniciar sesión con GitHub",
+  },
+  dashboard: {
+    title: "Repositorios",
+    subtitle:
+      "Administra tus suscripciones de repositorios de GitHub y rastrea commits",
+    searchPlaceholder:
+      "Buscar repositorios... (intenta: is:subscribed, is:private, is:public)",
+    tabs: {
+      available: "Disponibles",
+      subscribed: "Suscritos",
+    },
+    subscribe: "Suscribir",
+    unsubscribe: "Desuscribir",
+    noSubscribed: "Aún no hay repositorios suscritos",
+    noRepos:
+      "No se encontraron repositorios. Asegúrate de tener acceso a repositorios de GitHub.",
+    noResults: "No hay repositorios que coincidan con tu búsqueda",
+    private: "Privado",
+    errors: {
+      loadRepos: "Error al cargar repositorios",
+      loadSubscriptions: "Error al cargar suscripciones",
+      subscribe: "Error al suscribir",
+      unsubscribe: "Error al desuscribir",
+    },
+  },
+  repoDetail: {
+    viewOnGitHub: "Ver en GitHub",
+    defaultBranch: "Rama predeterminada",
+    commits: "Commits",
+    totalCommits: "Total de commits",
+    analyzed: "analizados",
+    totalAuthors: "Contribuidores",
+    analyses: "Análisis",
+    recentCommits: "Commits recientes",
+    codeAnalyses: "Análisis de código",
+    contributors: "Contribuidores",
+    noCommits: "No hay commits rastreados aún",
+    noAnalyses: "No hay análisis disponibles aún",
+    qualityScore: "Calidad",
+    complexity: "Complejidad",
+    issues: "problemas",
+    fileActivity: "Actividad de archivos",
+    filesAdded: "Agregados",
+    filesModified: "Modificados",
+    filesRemoved: "Eliminados",
+    dateRange: "Rango de fechas",
+    firstCommit: "Primer commit",
+    lastCommit: "Último commit",
+    errors: {
+      loadRepo: "Error al cargar repositorio",
+      loadCommits: "Error al cargar commits",
+      loadAnalyses: "Error al cargar análisis",
+    },
+  },
+};
