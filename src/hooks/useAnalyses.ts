@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { api } from "@/utils/api";
 
 export const useRepositoryAnalyses = (
@@ -18,3 +18,22 @@ export const useAnalysis = (repositoryId: number, analysisId: number) =>
     queryFn: () => api.analyses.getById(repositoryId, analysisId),
     enabled: !!repositoryId && !!analysisId,
   });
+
+export const useTriggerAnalysis = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      repositoryId,
+      commitIds,
+    }: {
+      repositoryId: number;
+      commitIds: number[];
+    }) => api.analyses.trigger(repositoryId, commitIds),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["analyses", variables.repositoryId],
+      });
+    },
+  });
+};

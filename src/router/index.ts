@@ -25,6 +25,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/prompts",
+    name: "prompts",
+    component: () => import("../pages/PromptsPage.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/",
     redirect: "/dashboard",
   },

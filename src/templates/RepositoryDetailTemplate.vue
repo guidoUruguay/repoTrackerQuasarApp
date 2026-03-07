@@ -41,6 +41,15 @@
         <div class="row items-center q-gutter-sm">
           <q-btn
             v-if="repo"
+            color="primary"
+            dense
+            icon="play_arrow"
+            :label="$t('repoDetail.runAnalysis')"
+            size="sm"
+            @click="showAnalyzeDialog = true"
+          />
+          <q-btn
+            v-if="repo"
             flat
             dense
             icon="open_in_new"
@@ -524,15 +533,76 @@
         </div>
       </q-page>
     </q-page-container>
+
+    <q-dialog v-model="showAnalyzeDialog">
+      <q-card class="bg-grey-9" style="min-width: 500px; max-width: 90vw">
+        <q-card-section>
+          <div class="text-h6">{{ $t("repoDetail.selectCommits") }}</div>
+          <div class="text-caption text-grey-6">
+            {{ $t("repoDetail.selectCommitsHint") }}
+          </div>
+        </q-card-section>
+
+        <q-card-section
+          class="q-pt-none"
+          style="max-height: 400px; overflow-y: auto"
+        >
+          <q-list v-if="commits.length" dense separator>
+            <q-item
+              v-for="commit in commits"
+              :key="commit.id"
+              tag="label"
+              class="q-pa-sm"
+            >
+              <q-item-section avatar>
+                <q-checkbox
+                  v-model="selectedCommitIds"
+                  :val="commit.id"
+                  color="primary"
+                />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-grey-3">
+                  {{ commit.message.split("\n")[0] }}
+                </q-item-label>
+                <q-item-label caption class="text-grey-6">
+                  <span class="text-primary">{{
+                    commit.sha.substring(0, 7)
+                  }}</span>
+                  <span class="q-mx-xs">&middot;</span>
+                  {{ commit.author.name }}
+                  <span class="q-mx-xs">&middot;</span>
+                  {{ formatDate(commit.authorDate) }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <div v-else class="text-grey-6 text-center q-pa-md">
+            {{ $t("repoDetail.noCommits") }}
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat :label="$t('prompts.cancel')" v-close-popup />
+          <q-btn
+            color="primary"
+            :label="$t('repoDetail.runAnalysis')"
+            :loading="analyzeMutation.isPending.value"
+            :disable="!selectedCommitIds.length"
+            @click="handleAnalyze"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useRepository, useRepositoryStats } from "@/hooks/useRepos";
 import { useRepositoryCommits } from "@/hooks/useCommits";
-import { useRepositoryAnalyses } from "@/hooks/useAnalyses";
+import { useRepositoryAnalyses, useTriggerAnalysis } from "@/hooks/useAnalyses";
 import { useUnsubscribe } from "@/hooks/useSubscriptions";
 
 const props = defineProps<{
@@ -542,6 +612,8 @@ const props = defineProps<{
 const router = useRouter();
 const commitsPage = ref(1);
 const analysesPage = ref(1);
+const showAnalyzeDialog = ref(false);
+const selectedCommitIds = ref<number[]>([]);
 
 const {
   data: repo,
@@ -569,6 +641,7 @@ const analyses = computed(() => analysesResponse.value?.data || []);
 const analysesMeta = computed(() => analysesResponse.value?.meta);
 
 const unsubscribeMutation = useUnsubscribe();
+const analyzeMutation = useTriggerAnalysis();
 
 const handleUnsubscribe = () => {
   unsubscribeMutation.mutate(props.id, {
@@ -577,6 +650,24 @@ const handleUnsubscribe = () => {
     },
   });
 };
+
+const handleAnalyze = () => {
+  analyzeMutation.mutate(
+    { repositoryId: props.id, commitIds: selectedCommitIds.value },
+    {
+      onSuccess: () => {
+        showAnalyzeDialog.value = false;
+        selectedCommitIds.value = [];
+      },
+    },
+  );
+};
+
+watch(showAnalyzeDialog, (open) => {
+  if (open && commits.value.length) {
+    selectedCommitIds.value = [commits.value[0].id];
+  }
+});
 
 const formatDate = (dateStr: string | null): string => {
   if (!dateStr) return "N/A";

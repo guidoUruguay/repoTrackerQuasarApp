@@ -91,13 +91,20 @@ export const api = {
       request<CodeAnalysis>(
         `/repositories/${repositoryId}/analyses/${analysisId}`,
       ),
+    trigger: (repositoryId: number, commitIds: number[]) =>
+      request<CodeAnalysis[]>(`/repositories/${repositoryId}/analyze`, {
+        method: "POST",
+        body: JSON.stringify({ commitIds }),
+      }),
   },
 
   prompts: {
-    getAll: (page = 1) =>
-      request<PaginatedResponse<Prompt>>(`/prompts?page=${page}`),
+    getAll: (page = 1, perPage = 50) =>
+      request<PaginatedResponse<Prompt>>(
+        `/prompts?page=${page}&perPage=${perPage}`,
+      ),
     getById: (id: number) => request<Prompt>(`/prompts/${id}`),
-    create: (data: Omit<Prompt, "id" | "createdAt" | "updatedAt">) =>
+    create: (data: Omit<Prompt, "id" | "createdAt" | "updatedAt" | "userId">) =>
       request<Prompt>("/prompts", {
         method: "POST",
         body: JSON.stringify(data),

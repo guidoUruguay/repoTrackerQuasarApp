@@ -29,6 +29,16 @@
             flat
             dense
             round
+            icon="auto_awesome"
+            size="sm"
+            @click="router.push({ name: 'prompts' })"
+          >
+            <q-tooltip>{{ $t("prompts.title") }}</q-tooltip>
+          </q-btn>
+          <q-btn
+            flat
+            dense
+            round
             icon="vpn_key"
             size="sm"
             @click="handleReauthorize"

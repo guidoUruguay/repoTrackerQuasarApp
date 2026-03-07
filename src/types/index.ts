@@ -97,6 +97,7 @@ export interface Prompt {
   description: string;
   isActive: boolean;
   type: "ai" | "static";
+  userId: number;
   createdAt?: string;
   updatedAt?: string;
 }

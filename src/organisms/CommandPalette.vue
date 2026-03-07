@@ -98,6 +98,14 @@ const staticCommands = computed<CommandItem[]>(() => [
     keywords: ["home", "dashboard", "repos"],
   },
   {
+    id: "prompts",
+    label: "Go to Prompts",
+    description: "Manage analysis prompts",
+    icon: "auto_awesome",
+    action: () => router.push("/prompts"),
+    keywords: ["prompts", "analysis", "ai", "static"],
+  },
+  {
     id: "subscribed",
     label: "Show Subscribed Repos",
     description: "Filter subscribed repositories",

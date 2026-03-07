@@ -19,8 +19,9 @@ export const useCreatePrompt = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Omit<Prompt, "id" | "createdAt" | "updatedAt">) =>
-      api.prompts.create(data),
+    mutationFn: (
+      data: Omit<Prompt, "id" | "createdAt" | "updatedAt" | "userId">,
+    ) => api.prompts.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prompts"] });
     },
