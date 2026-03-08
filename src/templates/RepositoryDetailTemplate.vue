@@ -363,16 +363,31 @@
                   <div class="text-h6">
                     {{ $t("requirements.title") }}
                   </div>
-                  <q-btn
-                    flat
-                    dense
-                    icon="arrow_forward"
-                    :label="$t('requirements.viewAll')"
-                    color="primary"
-                    @click="
-                      router.push(`/repositories/${props.id}/requirements`)
-                    "
-                  />
+                  <div class="row q-gutter-xs">
+                    <q-btn
+                      flat
+                      dense
+                      icon="add"
+                      color="positive"
+                      @click="
+                        router.push(`/repositories/${props.id}/requirements`)
+                      "
+                    >
+                      <q-tooltip>{{
+                        $t("requirements.createRequirement")
+                      }}</q-tooltip>
+                    </q-btn>
+                    <q-btn
+                      flat
+                      dense
+                      icon="arrow_forward"
+                      :label="$t('requirements.viewAll')"
+                      color="primary"
+                      @click="
+                        router.push(`/repositories/${props.id}/requirements`)
+                      "
+                    />
+                  </div>
                 </div>
 
                 <div v-if="requirementsPending" class="text-center q-pa-md">
