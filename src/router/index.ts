@@ -31,6 +31,18 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/repositories/:repositoryId/requirements",
+    name: "requirements",
+    component: () => import("../pages/RequirementsPage.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/requirements/:requirementId",
+    name: "requirement-detail",
+    component: () => import("../pages/RequirementDetailPage.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/",
     redirect: "/dashboard",
   },

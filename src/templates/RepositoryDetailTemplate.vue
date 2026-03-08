@@ -359,6 +359,51 @@
               style="border-color: rgba(255, 255, 255, 0.1)"
             >
               <q-card-section>
+                <div class="row items-center justify-between q-mb-md">
+                  <div class="text-h6">
+                    {{ $t("requirements.title") }}
+                  </div>
+                  <q-btn
+                    flat
+                    dense
+                    icon="arrow_forward"
+                    :label="$t('requirements.viewAll')"
+                    color="primary"
+                    @click="
+                      router.push(`/repositories/${props.id}/requirements`)
+                    "
+                  />
+                </div>
+
+                <div v-if="requirementsPending" class="text-center q-pa-md">
+                  <q-spinner size="md" color="primary" />
+                </div>
+
+                <div
+                  v-else-if="!requirements?.data.length"
+                  class="text-grey-6 text-center q-pa-md"
+                >
+                  {{ $t("requirements.noRequirements") }}
+                </div>
+
+                <div v-else class="q-gutter-sm">
+                  <requirement-card
+                    v-for="req in requirements.data.slice(0, 3)"
+                    :key="req.id"
+                    :requirement="req"
+                    @click="router.push(`/requirements/${req.id}`)"
+                  />
+                </div>
+              </q-card-section>
+            </q-card>
+
+            <q-card
+              flat
+              bordered
+              class="bg-grey-9 q-mb-lg"
+              style="border-color: rgba(255, 255, 255, 0.1)"
+            >
+              <q-card-section>
                 <div class="text-h6 q-mb-md">
                   {{ $t("repoDetail.recentCommits") }}
                 </div>
@@ -604,6 +649,8 @@ import { useRepository, useRepositoryStats } from "@/hooks/useRepos";
 import { useRepositoryCommits } from "@/hooks/useCommits";
 import { useRepositoryAnalyses, useTriggerAnalysis } from "@/hooks/useAnalyses";
 import { useUnsubscribe } from "@/hooks/useSubscriptions";
+import { useRequirements } from "@/hooks/useRequirements";
+import RequirementCard from "@/molecules/RequirementCard.vue";
 
 const props = defineProps<{
   id: number;
@@ -622,6 +669,11 @@ const {
 } = useRepository(props.id);
 
 const { data: stats, isPending: statsPending } = useRepositoryStats(props.id);
+
+const { data: requirements, isPending: requirementsPending } = useRequirements(
+  props.id,
+  1,
+);
 
 const {
   data: commitsResponse,

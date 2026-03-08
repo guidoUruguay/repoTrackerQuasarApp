@@ -7,6 +7,7 @@ import type {
   Prompt,
   PaginatedResponse,
   RepositoryStats,
+  Requirement,
 } from "@/types";
 
 const BASE_URL = import.meta.env.DEV ? "/api" : import.meta.env.VITE_API_URL;
@@ -116,6 +117,40 @@ export const api = {
       }),
     delete: (id: number) =>
       request(`/prompts/${id}`, {
+        method: "DELETE",
+      }),
+  },
+
+  requirements: {
+    getByRepository: (repositoryId: number, page = 1, perPage = 20) =>
+      request<PaginatedResponse<Requirement>>(
+        `/repositories/${repositoryId}/requirements?page=${page}&perPage=${perPage}`,
+      ),
+    getById: (requirementId: number) =>
+      request<Requirement>(`/requirements/${requirementId}`),
+    create: (
+      repositoryId: number,
+      data: { title: string; description?: string },
+    ) =>
+      request<Requirement>(`/repositories/${repositoryId}/requirements`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    update: (
+      requirementId: number,
+      data: Partial<{
+        title: string;
+        description: string | null;
+        status: "pending" | "in_progress" | "completed" | "blocked";
+        progress: number;
+      }>,
+    ) =>
+      request<Requirement>(`/requirements/${requirementId}`, {
+        method: "PUT",
+        body: JSON.stringify(data),
+      }),
+    delete: (requirementId: number) =>
+      request(`/requirements/${requirementId}`, {
         method: "DELETE",
       }),
   },

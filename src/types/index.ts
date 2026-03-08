@@ -151,3 +151,38 @@ export interface RepositoryStats {
   };
   authors: StatsAuthor[];
 }
+
+export interface RequirementAnalysisResult {
+  isRelevant: boolean;
+  progressDelta: number;
+  summary: string;
+  detectedFeatures: string[];
+  confidence: number;
+}
+
+export interface RequirementProgress {
+  id: number;
+  requirementId: number;
+  commitId: number;
+  analysisResult: RequirementAnalysisResult;
+  progressDelta: number;
+  aiSummary: string;
+  detectedAt: string;
+  commit?: Commit;
+}
+
+export interface Requirement {
+  id: number;
+  repositoryId: number;
+  userId: number;
+  title: string;
+  description: string | null;
+  status: "pending" | "in_progress" | "completed" | "blocked";
+  progress: number;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  user?: User;
+  repository?: SubscribedRepo;
+  progresses?: RequirementProgress[];
+}
